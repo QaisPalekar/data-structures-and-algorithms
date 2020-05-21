@@ -10,6 +10,7 @@ class LinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
+        this.pointer;
         this.size = 0;
     }
 
@@ -60,13 +61,43 @@ class LinkedList {
         this.removeFromTail();
     }
 
-    removeNode(node) {
+    next() {
+        let returnValue;
+        if(this.pointer === null) {
+            throw 'No More Elements';
+        }
+        if(this.pointer === undefined) {
+            this.pointer = this.head;
+        }
+        returnValue = this.pointer.value;
+        this.pointer = this.pointer.next;
+        return returnValue;
+    }
+
+    hasNext() {
+        return this.pointer !== null;
+    }
+
+    removeIndex(index) {
+        if(index < 0) {
+            throw 'Incorrect Integer'
+        }
+        if(index >= this.size) {
+            throw 'Size exceeded'
+        }
+        
         let currrentNode = this.head
-        while(currrentNode.value === node.value) {
-            console.log(currrentNode.value);
+        for(let indexFlag = 0; indexFlag < index; indexFlag++) {
             currrentNode = currrentNode.next;
         }
+        let {previous, next} = currrentNode;
+        previous.next = next;
+        next.previous = previous;
+        currrentNode = null;
+        this.size--;
     }
+
+    // [Symbol]
     
     print() {
         let currrentNode = this.head
@@ -81,14 +112,11 @@ class LinkedList {
 const newLinkedList = new LinkedList();
 newLinkedList.add('hello');
 newLinkedList.add('world');
-newLinkedList.add('world1');
-newLinkedList.add('world2');
-newLinkedList.addToHead('world3');
-newLinkedList.removeFromTail();
-newLinkedList.removeFromTail();
-newLinkedList.removeFromTail();
-newLinkedList.removeFromTail();
-newLinkedList.removeFromTail();
+newLinkedList.add(5);
+newLinkedList.add({ obj: 45 });
 newLinkedList.print();
-console.log(newLinkedList);
+console.log();
 
+console.log(newLinkedList.next());
+console.log(newLinkedList.next());
+console.log(newLinkedList.hasNext());
